@@ -1,0 +1,19 @@
+﻿.productsList {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    width: max-content;
+    height: 1000px;
+    border-style: groove;
+    border-color: #4f5050;
+}
+
+ul {
+    margin: 10px;
+    list-style: none;
+}
+
+#btnAddToCart {
+    width: max-content;
+    height: 50px;
+}

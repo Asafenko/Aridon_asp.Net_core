@@ -1,0 +1,37 @@
+﻿@page "/products"
+@using OnlineStore.BlazorClient.Components
+@using Blazored.Toast.Services
+@using OnlineStore.Models.Responses
+
+@inherits AppComponentBase
+@inject IToastService ToastService;
+
+<h3>Список товаров</h3>
+<div class="productsList">
+@if (_products is not null)
+{
+    foreach (var product in _products.Products)
+    {
+        <ProductItem Product="product"/>
+        <p>@product.ProductId</p>
+        <button class="btn btn-success" id="btnAddToCart"  @onclick="@(() =>AddToCart(product.ProductId))">Добавить в корзину</button>
+    }
+}
+</div>
+
+@code {
+
+    private ProductsResponse? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _products = await ShopClient.GetProducts();
+    }
+
+    private async Task AddToCart(Guid productId)
+    {
+        await ShopClient.AddToCart(productId, 1);
+        ToastService.ShowSuccess("Success!", "Congratulations!");
+    }
+}

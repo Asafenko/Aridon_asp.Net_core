@@ -1,0 +1,45 @@
+﻿@page "/cart"
+@using OnlineStore.Models.Responses
+@inherits OnlineStore.BlazorClient.Components.AppComponentBase
+
+<h3>Корзина</h3>
+@if (!_cartItems!.Items.Any())
+{
+    <p>Вперед за покупками!</p>
+}
+else
+{
+    <p>Товаров в корзине:@_cartItems!.Items.Count()</p>
+}
+
+@foreach (var item in _cartItems.Items)
+{
+    @* <ul> *@
+    @*     <li>ID: @GetProductByIdInCart(item.ProductId)</li> *@
+    @*     <li>NAME: @GetProductByIdInCart(item.ProductId).Result.ProductName</li> *@
+    @*     <li>PRICE: @GetProductByIdInCart(item.ProductId).Result.Price</li> *@
+    @*     <li>QUANTITY: @item.Quantity</li> *@
+    @* </ul> *@
+    <ul>
+        <li>ID: @item.ProductId</li>
+        <li>QUANTITY: @item.Quantity</li>
+    </ul>
+}
+
+@code {
+    private CartResponse? _cartItems;
+    private ProductResponse? _product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _cartItems = await ShopClient.GetItemsInCart();
+    }
+
+    private async Task<ProductResponse> GetProductByIdInCart(Guid id)
+    {
+        _product = await ShopClient.GetProduct(id);
+        return _product;
+    }
+
+}

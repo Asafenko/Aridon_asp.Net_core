@@ -1,0 +1,30 @@
+﻿@page "/productInfo/{ProductId:guid}"
+@using OnlineStore.BlazorClient.Components
+@using OnlineStore.Models.Responses
+
+@inherits AppComponentBase
+
+
+<h3>Информация о товаре</h3>
+@if (_product != null)
+{
+    <p>ID: @_product.ProductId</p>
+    <p>Название: @_product.ProductName</p>
+    <p>Цена: @_product.Price</p>
+}
+
+
+@code {
+
+    [Parameter]
+    public Guid ProductId { get; set; }
+
+    private ProductResponse _product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _product = await ShopClient.GetProduct(ProductId);
+    }
+
+}
